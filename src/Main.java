@@ -1,23 +1,43 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Seja bem-vindo ao Jogo de Adivinhar!!");
-        System.out.println("===================REGRAS===================");
-        System.out.println("O jogo funciona assim, o computador pensou\nem um número de 1 a 100, e o jogador tem um\nnúmero limitado de chances, conforme a dificuldade.");
 
+    public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
 
-        System.out.println("=============================================");
-        System.out.println("1. Fácil (10 chances)");
-        System.out.println("2. Médio (5 chances)");
-        System.out.println("3. Difícil (3 chances)");
-        System.out.println("0. Sair");
+        mostrarBoasVindas();                          // regras e menu
+        int chances = escolherDificuldade(leitor);    // devolve 10, 5, 3 ou 0
 
-        System.out.println("==============================================");
+        if (chances == 0) {                           // 0 = jogador escolheu sair
+            leitor.close();
+            return;                                   // encerra o programa
+        }
 
-        System.out.println("Digite um número para selecionar a dificuldade desejada: ");
+        jogar(leitor, chances);                       // a partida inteira
+        leitor.close();
+    }
 
+    static void mostrarBoasVindas() {
+        System.out.println("+------------------------------------------+");
+        System.out.println("|         JOGO DE ADIVINHAR NÚMERO         |");
+        System.out.println("+------------------------------------------+");
+        System.out.println();                                          // linha em branco
+        System.out.println("  Pensei em um número de 1 a 100.");
+        System.out.println("  Você terá um número limitado de chances,");
+        System.out.println("  conforme a dificuldade escolhida.");
+        System.out.println();
+        System.out.println("  Escolha a dificuldade:");
+        System.out.println();
+        System.out.println("    [1] Fácil    - 10 chances");
+        System.out.println("    [2] Médio    -  5 chances");
+        System.out.println("    [3] Difícil  -  3 chances");
+        System.out.println("    [0] Sair");
+        System.out.println();
+
+        System.out.print("Escolha um número para dificuldade desejada -> ");
+    }
+
+    static int escolherDificuldade(Scanner leitor) {
         int numDificuldade = leitor.nextInt();
 
         int chances;
@@ -25,70 +45,69 @@ public class Main {
         switch (numDificuldade) {
             case 1 -> {
                 chances = 10;
-                System.out.println("Nível fácil escolhido.");
+                System.out.println();
+                System.out.println("  Nível Fácil: você tem " + chances + " chances. ");
+                return chances;
             }
             case 2 -> {
                 chances = 5;
-                System.out.println("Nível médio escolhido.");
+                System.out.println();
+                System.out.println("  Nível Médio: você tem " + chances + " chances. ");
+                return chances;
             }
             case 3 -> {
                 chances = 3;
-                System.out.println("Nível difícil escolhido.");
+                System.out.println();
+                System.out.println("  Nível Difícil: você tem " + chances + " chances. ");
+                return chances;
             }
             case 0 -> {
-                System.out.println("Até a próxima!");
-                return;
+                System.out.println();
+                System.out.println(" Até a próxima! ");
+                return 0;
             }
             default -> {
                 chances = 5;
-                System.out.println("Nível inválido. Escolha do nível médio como padrão.");
+                System.out.println();
+                System.out.println(" Nível inválido. Escolha do nível médio definido como padrão. ");
+                return chances;
             }
         }
+    }
 
-        System.out.println("Você tem " + chances + " chances");
+    static int sortearNumero() {
+        return (int) (Math.random() * 100) + 1;       // de 1 a 100
+    }
 
-        int numAleatorio;
-
+    static void jogar(Scanner leitor, int chances) {
+        int numAleatorio = sortearNumero();
         int numUsuario;
-
         int contadorTentativas = 0;
 
-        System.out.println("===============================================");
-
-        System.out.println("Pensando em um número entre 1 e 100...");
-
-        numAleatorio = ((int) (Math.random() * 100) + 1);
-
-        System.out.println("Número escolhido.");
-
-        System.out.println("\n==============================================");
-
-        System.out.println("Sua vez de adivinhar");
-        System.out.println("\nVamos testar sua sorte, digite um número entre 1 e 100: ");
+        System.out.println();
+        System.out.println("  Pensei em um número entre 1 e 100. ");
+        System.out.println("  Tente adivinhar! ");
 
         do {
-            System.out.println("Seu palpite: ");
+            System.out.println();                  // separa cada rodada da anterior
+            System.out.print("  Seu palpite -> ");
             numUsuario = leitor.nextInt();
             contadorTentativas++;
 
             if (numUsuario < numAleatorio) {
-                System.out.println("O número é maior");
-                System.out.println("Ainda restam " + (chances - contadorTentativas) + " tentativas");
+                System.out.println("↑ O número é maior. Restam " + (chances - contadorTentativas) + " chances! ");
             } else if (numUsuario > numAleatorio) {
-                System.out.println("O número é menor");
-                System.out.println("Ainda restam " + (chances - contadorTentativas) + " tentativas");
+                System.out.println("↓ O número é menor. Restam " + (chances - contadorTentativas) + " chances! ");
             }
-
         } while (numUsuario != numAleatorio && contadorTentativas < chances);
 
         if (numUsuario == numAleatorio) {
-            System.out.println("Acertouu!!! Parabéns!! Sua sorte está com você!");
-            System.out.println("Tentativas: " + contadorTentativas);
+            System.out.println();
+            System.out.println("  ★ Parabéns! Você acertou em " + contadorTentativas + " tentativas! ");
         } else {
-            System.out.println("Infelizmente você não acertou!! Mais sorte na próxima vez");
-            System.out.println("... O número era " + numAleatorio);
+            System.out.println();
+            System.out.println(" Infelizmente você não acertou!! Mais sorte na próxima vez. ");
+            System.out.println(" O número era " + numAleatorio + " ");
         }
-
-        leitor.close();
     }
 }
