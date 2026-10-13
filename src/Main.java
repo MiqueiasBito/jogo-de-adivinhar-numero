@@ -11,7 +11,7 @@ public class Main {
         System.out.println("=============================================");
         System.out.println("1. Fácil (10 chances)");
         System.out.println("2. Médio (5 chances)");
-        System.out.println("3. Difícil (3 chances");
+        System.out.println("3. Difícil (3 chances)");
         System.out.println("0. Sair");
 
         System.out.println("==============================================");
@@ -46,5 +46,49 @@ public class Main {
         }
 
         System.out.println("Você tem " + chances + " chances");
+
+        int numAleatorio;
+
+        int numUsuario;
+
+        int contadorTentativas = 0;
+
+        System.out.println("===============================================");
+
+        System.out.println("Pensando em um número entre 1 e 100...");
+
+        numAleatorio = ((int) (Math.random() * 100) + 1);
+
+        System.out.println("Número escolhido.");
+
+        System.out.println("\n==============================================");
+
+        System.out.println("Sua vez de adivinhar");
+        System.out.println("\nVamos testar sua sorte, digite um número entre 1 e 100: ");
+
+        do {
+            System.out.println("Seu palpite: ");
+            numUsuario = leitor.nextInt();
+            contadorTentativas++;
+
+            if (numUsuario < numAleatorio) {
+                System.out.println("O número é maior");
+                System.out.println("Ainda restam " + (chances - contadorTentativas) + " tentativas");
+            } else if (numUsuario > numAleatorio) {
+                System.out.println("O número é menor");
+                System.out.println("Ainda restam " + (chances - contadorTentativas) + " tentativas");
+            }
+
+        } while (numUsuario != numAleatorio && contadorTentativas < chances);
+
+        if (numUsuario == numAleatorio) {
+            System.out.println("Acertouu!!! Parabéns!! Sua sorte está com você!");
+            System.out.println("Tentativas: " + contadorTentativas);
+        } else {
+            System.out.println("Infelizmente você não acertou!! Mais sorte na próxima vez");
+            System.out.println("... O número era " + numAleatorio);
+        }
+
+        leitor.close();
     }
 }
