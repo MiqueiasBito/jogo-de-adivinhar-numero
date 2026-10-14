@@ -5,15 +5,20 @@ public class Main {
     public static void main(String[] args) {
         Scanner leitor = new Scanner(System.in);
 
-        mostrarBoasVindas();                          // regras e menu
-        int chances = escolherDificuldade(leitor);    // devolve 10, 5, 3 ou 0
 
-        if (chances == 0) {                           // 0 = jogador escolheu sair
-            leitor.close();
-            return;                                   // encerra o programa
-        }
+        do {
+            mostrarBoasVindas();                          // regras e menu
+            int chances = escolherDificuldade(leitor);    // devolve 10, 5, 3 ou 0
 
-        jogar(leitor, chances);                       // a partida inteira
+            if (chances == 0) {                           // 0 = jogador escolheu sair
+                leitor.close();
+                return;                                   // encerra o programa
+            }
+
+            jogar(leitor, chances);                       // a partida inteira
+        } while (querJogarDeNovo(leitor));
+
+        System.out.println(" Obrigado por jogar! Até a próxima. ");
         leitor.close();
     }
 
@@ -109,5 +114,11 @@ public class Main {
             System.out.println(" Infelizmente você não acertou!! Mais sorte na próxima vez. ");
             System.out.println(" O número era " + numAleatorio + " ");
         }
+    }
+
+    static boolean querJogarDeNovo(Scanner leitor) {
+        System.out.print(" Jogar de novo? (s/n) -> ");
+        String resposta = leitor.next();
+        return resposta.equalsIgnoreCase("s");
     }
 }
